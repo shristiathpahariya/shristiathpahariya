@@ -20,11 +20,13 @@ jobs:
         contains(github.event.comment.body, 'rotate') || 
         contains(github.event.comment.body, 'drop') || 
         contains(github.event.comment.body, 'down') ||
+        contains(github.event.comment.body, 'reset') ||
         contains(github.event.comment.body, 'Left') || 
         contains(github.event.comment.body, 'Right') || 
         contains(github.event.comment.body, 'Rotate') || 
         contains(github.event.comment.body, 'Drop') || 
-        contains(github.event.comment.body, 'Down')))
+        contains(github.event.comment.body, 'Down') ||
+        contains(github.event.comment.body, 'Reset')))
 
     steps:
       - name: Debug event data
