@@ -1,0 +1,54 @@
+name: Update Weather
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # updates every hour
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  weather:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch Weather & Update README
+        env:
+          CITY: Kathmandu
+        run: |
+          DATA=$(curl -s "https://wttr.in/${CITY}?format=j1")
+          TEMP=$(echo $DATA | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['temp_C'])")
+          FEELS=$(echo $DATA | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['FeelsLikeC'])")
+          DESC=$(echo $DATA | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['weatherDesc'][0]['value'])")
+          HUMIDITY=$(echo $DATA | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['humidity'])")
+          WIND=$(echo $DATA | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['windspeedKmph'])")
+
+          BLOCK="<!-- WEATHER_START -->
+          🌦️ **Weather in ${CITY}** — updated every hour
+          | 🌡️ Temp | 🤔 Feels Like | ☁️ Condition | 💧 Humidity | 💨 Wind |
+          |--------|-------------|------------|-----------|------|
+          | ${TEMP}°C | ${FEELS}°C | ${DESC} | ${HUMIDITY}% | ${WIND} km/h |
+          <!-- WEATHER_END -->"
+
+          README=$(cat README.md)
+          if echo "$README" | grep -q "<!-- WEATHER_START -->"; then
+            python3 -c "
+          import re, sys
+          content = open('README.md').read()
+          block = open('/dev/stdin').read()
+          result = re.sub(r'<!-- WEATHER_START -->.*?<!-- WEATHER_END -->', block, content, flags=re.DOTALL)
+          open('README.md', 'w').write(result)
+          " <<< "$BLOCK"
+          else
+            echo -e "\n$BLOCK" >> README.md
+          fi
+
+      - name: Commit weather update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git diff --staged --quiet || git commit -m "🌦️ Weather update"
+          git push
