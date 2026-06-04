@@ -173,14 +173,23 @@ async function main() {
   saveState(state);
 
   const svg = renderSVG(state);
-  fs.writeFileSync("tetris.svg", svg);
+  // Use a unique filename each time to bypass GitHub's aggressive image caching
+  // GitHub's camo proxy strips query params, so ?t=xxx doesn't work
+  const svgFile = `tetris-${Date.now()}.svg`;
+  fs.writeFileSync(svgFile, svg);
+
+  // Clean up old SVG files (keep only the current one)
+  const files = fs.readdirSync(".");
+  files.forEach(f => {
+    if (f.startsWith("tetris-") && f.endsWith(".svg") && f !== svgFile) {
+      fs.unlinkSync(f);
+    }
+  });
 
   // Update README
   let readme = fs.readFileSync("README.md", "utf8");
   const marker = "<!-- TETRIS_START -->", endMarker = "<!-- TETRIS_END -->";
-  // Use raw.githubusercontent.com with cache-bust to bypass GitHub's SVG cache
-  const cacheBust = Date.now();
-  const block = `${marker}\n![Tetris](https://raw.githubusercontent.com/${owner}/${repo}/main/tetris.svg?t=${cacheBust})\n\n**Score: ${state.score}** ${state.gameOver ? "💀 Game Over! Comment \`reset\` to restart." : ""}\n\n> 🕹️ **[Play here!](../../issues)** — Comment \`left\`, \`right\`, \`rotate\`, \`drop\`, or \`reset\` (combine moves like \`left, drop\`)\n${endMarker}`;
+  const block = `${marker}\n![Tetris](https://raw.githubusercontent.com/${owner}/${repo}/main/${svgFile})\n\n**Score: ${state.score}** ${state.gameOver ? "💀 Game Over! Comment \`reset\` to restart." : ""}\n\n> 🕹️ **[Play here!](../../issues)** — Comment \`left\`, \`right\`, \`rotate\`, \`drop\`, or \`reset\` (combine moves like \`left, drop\`)\n${endMarker}`;
   if (readme.includes(marker)) {
     readme = readme.replace(new RegExp(`${marker}[\\s\\S]*?${endMarker}`), block);
   } else {

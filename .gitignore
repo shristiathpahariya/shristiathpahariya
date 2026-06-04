@@ -3,3 +3,6 @@
 /.vscode
 
 package-lock.json
+runs.json
+jobs_output.json
+logs.zip
