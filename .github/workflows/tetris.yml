@@ -35,7 +35,15 @@ jobs:
           COMMENT_BODY: ${{ github.event.comment.body }}
           COMMENT_USER: ${{ github.event.comment.user.login }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: node .github/scripts/tetris.js
+
+      - name: Debug output
+        run: |
+          echo "Files in root:"
+          ls -la
+          echo "SVG exists:"
+          test -f tetris.svg && echo "YES" || echo "NO - FILE MISSING"
 
       - name: Commit updated README
         run: |
