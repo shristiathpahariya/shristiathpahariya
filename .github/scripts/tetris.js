@@ -157,11 +157,18 @@ async function ensureIssue() {
 }
 
 async function main() {
-  const move = (process.env.COMMENT_BODY || "").trim().toLowerCase();
+  const comment = (process.env.COMMENT_BODY || "").toLowerCase();
+  const validMoves = ["left", "right", "rotate", "drop", "down", "reset"];
+  const moves = validMoves.filter(m => comment.includes(m));
   const user = process.env.COMMENT_USER || "player";
 
   let state = loadState();
-  if (move) state = applyMove(state, move);
+  if (moves.length > 0) {
+    for (const move of moves) {
+      state = applyMove(state, move);
+      if (state.gameOver) break;
+    }
+  }
 
   saveState(state);
 
@@ -171,7 +178,7 @@ async function main() {
   // Update README
   let readme = fs.readFileSync("README.md", "utf8");
   const marker = "<!-- TETRIS_START -->", endMarker = "<!-- TETRIS_END -->";
-  const block = `${marker}\n![Tetris](tetris.svg)\n\n**Score: ${state.score}** ${state.gameOver ? "💀 Game Over! Comment \`reset\` to restart." : ""}\n\n> 🕹️ **[Play here!](../../issues)** — Comment \`left\`, \`right\`, \`rotate\`, \`drop\`, or \`reset\`\n${endMarker}`;
+  const block = `${marker}\n![Tetris](tetris.svg)\n\n**Score: ${state.score}** ${state.gameOver ? "💀 Game Over! Comment \`reset\` to restart." : ""}\n\n> 🕹️ **[Play here!](../../issues)** — Comment \`left\`, \`right\`, \`rotate\`, \`drop\`, or \`reset\` (combine moves like \`left, drop\`)\n${endMarker}`;
   if (readme.includes(marker)) {
     readme = readme.replace(new RegExp(`${marker}[\\s\\S]*?${endMarker}`), block);
   } else {
