@@ -17,7 +17,7 @@ Here are some ideas to get you started:
 
 
 <!-- TETRIS_START -->
-![Tetris](tetris.svg)
+![Tetris](tetris.svg?t=1780561365500)
 
 **Score: 0** 
 
