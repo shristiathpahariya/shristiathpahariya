@@ -5,6 +5,10 @@ on:
     - cron: '0 * * * *'  # updates every hour
   workflow_dispatch:
 
+concurrency:
+  group: readme-update
+  cancel-in-progress: false
+
 permissions:
   contents: write
 

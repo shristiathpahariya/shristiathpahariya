@@ -5,6 +5,10 @@ on:
     types: [created]
   workflow_dispatch:
 
+concurrency:
+  group: readme-update
+  cancel-in-progress: false
+
 permissions:
   issues: write
   contents: write
