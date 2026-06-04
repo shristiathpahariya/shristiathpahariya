@@ -178,7 +178,9 @@ async function main() {
   // Update README
   let readme = fs.readFileSync("README.md", "utf8");
   const marker = "<!-- TETRIS_START -->", endMarker = "<!-- TETRIS_END -->";
-  const block = `${marker}\n![Tetris](tetris.svg)\n\n**Score: ${state.score}** ${state.gameOver ? "💀 Game Over! Comment \`reset\` to restart." : ""}\n\n> 🕹️ **[Play here!](../../issues)** — Comment \`left\`, \`right\`, \`rotate\`, \`drop\`, or \`reset\` (combine moves like \`left, drop\`)\n${endMarker}`;
+  // Cache-bust the SVG URL so GitHub doesn't serve a stale cached version
+  const cacheBust = Date.now();
+  const block = `${marker}\n![Tetris](tetris.svg?t=${cacheBust})\n\n**Score: ${state.score}** ${state.gameOver ? "💀 Game Over! Comment \`reset\` to restart." : ""}\n\n> 🕹️ **[Play here!](../../issues)** — Comment \`left\`, \`right\`, \`rotate\`, \`drop\`, or \`reset\` (combine moves like \`left, drop\`)\n${endMarker}`;
   if (readme.includes(marker)) {
     readme = readme.replace(new RegExp(`${marker}[\\s\\S]*?${endMarker}`), block);
   } else {
