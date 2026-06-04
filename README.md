@@ -29,3 +29,9 @@ Here are some ideas to get you started:
 
 > 🕹️ **[Play here!](../../issues)** — Comment `left`, `right`, `rotate`, `drop`, or `reset` (combine moves like `left, drop`)
 <!-- TETRIS_END -->
+<!-- WEATHER_START -->
+🌦️ **Weather in Kathmandu** — updated every hour
+| 🌡️ Temp | 🤔 Feels Like | ☁️ Condition | 💧 Humidity | 💨 Wind |
+|--------|-------------|------------|-----------|------|
+| 24°C | 26°C | Thunderstorm, Light Rain With Thunderstorm | 74% | 8 km/h |
+<!-- WEATHER_END -->
