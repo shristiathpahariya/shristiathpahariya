@@ -23,7 +23,7 @@ Here are some ideas to get you started:
 
 
 <!-- TETRIS_START -->
-![Tetris](https://raw.githubusercontent.com/shristiathpahariya/shristiathpahariya/main/tetris.svg?t=1780562343688)
+![Tetris](https://raw.githubusercontent.com/shristiathpahariya/shristiathpahariya/main/tetris-1780563002760.svg)
 
 **Score: 0** 
 
