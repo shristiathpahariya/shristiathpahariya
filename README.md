@@ -21,5 +21,5 @@ Here are some ideas to get you started:
 
 **Score: 0** 
 
-> 🕹️ **[Play here!](../../issues)** — Comment `left`, `right`, `rotate`, `drop`, or `reset`
+> 🕹️ **[Play here!](../../issues)** — Comment `left`, `right`, `rotate`, `drop`, or `reset` (combine moves like `left, drop`)
 <!-- TETRIS_END -->
