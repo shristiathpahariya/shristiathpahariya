@@ -19,7 +19,7 @@ Here are some ideas to get you started:
 
 
 <!-- TETRIS_START -->
-![Tetris](https://raw.githubusercontent.com/shristiathpahariya/shristiathpahariya/main/tetris-1780574445198.svg)
+![Tetris](https://raw.githubusercontent.com/shristiathpahariya/shristiathpahariya/main/tetris-1780574505252.svg)
 
 **Score: 0** 
 
