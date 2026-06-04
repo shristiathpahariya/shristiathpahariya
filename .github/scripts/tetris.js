@@ -186,7 +186,7 @@ async function main() {
   }
   fs.writeFileSync("README.md", readme);
 
-  if (move && process.env.ISSUE_NUMBER) {
+  if (moves.length > 0 && process.env.ISSUE_NUMBER) {
     await octokit.reactions.createForIssueComment({
       owner, repo,
       comment_id: parseInt(process.env.GITHUB_EVENT_PATH ? require(process.env.GITHUB_EVENT_PATH).comment.id : 0),
