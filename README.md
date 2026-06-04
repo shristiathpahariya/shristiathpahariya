@@ -14,3 +14,12 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+
+
+<!-- TETRIS_START -->
+![Tetris](tetris.svg)
+
+**Score: 0** 
+
+> 🕹️ **[Play here!](../../issues)** — Comment `left`, `right`, `rotate`, `drop`, or `reset`
+<!-- TETRIS_END -->
