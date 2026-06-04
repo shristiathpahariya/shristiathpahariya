@@ -53,18 +53,19 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
-          git diff --staged --quiet || git commit -m "🌦️ Weather update"
           
-          for i in 1 2 3; do
+          for i in 1 2 3 4 5; do
+            git pull origin main
+            git add README.md
+            git diff --staged --quiet && echo "No changes to commit" && exit 0
+            git commit -m "🌦️ Weather update"
             if git push; then
               echo "Push succeeded on attempt $i"
               exit 0
             fi
-            echo "Push rejected (attempt $i), pulling with rebase..."
-            git stash --include-untracked
-            git pull --rebase origin main
-            git stash pop || true
+            echo "Push rejected (attempt $i), resetting and retrying..."
+            git reset --soft HEAD~1
+            sleep $((i * 2))
           done
-          echo "Failed to push after 3 attempts"
+          echo "Failed to push after 5 attempts"
           exit 1

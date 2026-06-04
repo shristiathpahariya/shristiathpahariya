@@ -71,39 +71,30 @@ jobs:
           echo "SVG exists:"
           test -f tetris.svg && echo "YES" || echo "NO - FILE MISSING"
 
-      - name: Commit updated README and SVG
+      - name: Commit and push with retry
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md game-state.json tetris-*.svg
-          # Remove old SVG files that are no longer referenced in README
-          git ls-files 'tetris-*.svg' | while read f; do
-            if ! grep -q "$f" README.md; then
-              git rm "$f" 2>/dev/null || true
-            fi
-          done
-          git diff --staged --quiet || git commit -m "🎮 Tetris move by ${{ github.event.comment.user.login }}"
           
-          for i in 1 2 3; do
+          for i in 1 2 3 4 5; do
+            git pull origin main
+            node .github/scripts/tetris.js
+            git add README.md game-state.json tetris-*.svg
+            # Remove old SVG files no longer referenced in README
+            git ls-files 'tetris-*.svg' | while read f; do
+              if ! grep -q "$f" README.md; then
+                git rm "$f" 2>/dev/null || true
+              fi
+            done
+            git diff --staged --quiet && echo "No changes to commit" && exit 0
+            git commit -m "🎮 Tetris move by ${{ github.event.comment.user.login }}"
             if git push; then
               echo "Push succeeded on attempt $i"
               exit 0
             fi
-            echo "Push rejected (attempt $i), pulling with rebase..."
-            git stash --include-untracked
-            git pull --rebase origin main
-            git stash pop || true
-            if git diff --name-only HEAD~1 | grep -q "game-state.json"; then
-              echo "game-state.json was updated by another move, re-applying..."
-              node .github/scripts/tetris.js
-              git add README.md game-state.json tetris-*.svg
-              git ls-files 'tetris-*.svg' | while read f; do
-                if ! grep -q "$f" README.md; then
-                  git rm "$f" 2>/dev/null || true
-                fi
-              done
-              git diff --staged --quiet || git commit --amend --no-edit
-            fi
+            echo "Push rejected (attempt $i), resetting and retrying..."
+            git reset --soft HEAD~1
+            sleep $((i * 2))
           done
-          echo "Failed to push after 3 attempts"
+          echo "Failed to push after 5 attempts"
           exit 1
