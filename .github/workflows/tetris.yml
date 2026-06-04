@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'workflow_dispatch' ||
-      (github.event.issue.title == 'Play Tetris!' && 
+      (github.event.issue.title == '🎮 Play Tetris!' && 
        contains(fromJson('["left","right","rotate","drop","down"]'), github.event.comment.body))
 
     steps:
@@ -45,10 +45,10 @@ jobs:
           echo "SVG exists:"
           test -f tetris.svg && echo "YES" || echo "NO - FILE MISSING"
 
-      - name: Commit updated README
+      - name: Commit updated README and SVG
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md game-state.json
+          git add README.md game-state.json tetris.svg
           git diff --staged --quiet || git commit -m "🎮 Tetris move by ${{ github.event.comment.user.login }}"
           git push
