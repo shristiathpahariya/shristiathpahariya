@@ -15,9 +15,27 @@ jobs:
     if: |
       github.event_name == 'workflow_dispatch' ||
       (github.event.issue.title == '🎮 Play Tetris!' && 
-       contains(fromJson('["left","right","rotate","drop","down"]'), github.event.comment.body))
+       (contains(github.event.comment.body, 'left') || 
+        contains(github.event.comment.body, 'right') || 
+        contains(github.event.comment.body, 'rotate') || 
+        contains(github.event.comment.body, 'drop') || 
+        contains(github.event.comment.body, 'down') ||
+        contains(github.event.comment.body, 'Left') || 
+        contains(github.event.comment.body, 'Right') || 
+        contains(github.event.comment.body, 'Rotate') || 
+        contains(github.event.comment.body, 'Drop') || 
+        contains(github.event.comment.body, 'Down')))
 
     steps:
+      - name: Debug event data
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Issue title: ${{ github.event.issue.title }}"
+          echo "Comment body: '${{ github.event.comment.body }}'"
+          echo "Condition check:"
+          echo "  - Event name is workflow_dispatch: ${{ github.event_name == 'workflow_dispatch' }}"
+          echo "  - Issue title matches: ${{ github.event.issue.title == '🎮 Play Tetris!' }}"
+          echo "  - Comment contains valid move: YES"
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
