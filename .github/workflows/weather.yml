@@ -55,4 +55,16 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
           git diff --staged --quiet || git commit -m "🌦️ Weather update"
-          git push
+          
+          for i in 1 2 3; do
+            if git push; then
+              echo "Push succeeded on attempt $i"
+              exit 0
+            fi
+            echo "Push rejected (attempt $i), pulling with rebase..."
+            git stash --include-untracked
+            git pull --rebase origin main
+            git stash pop || true
+          done
+          echo "Failed to push after 3 attempts"
+          exit 1
