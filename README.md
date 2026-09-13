@@ -29,8 +29,9 @@ Here are some ideas to get you started:
 🌦️ **Weather in Kathmandu** — updated every hour
 | 🌡️ Temp | 🤔 Feels Like | ☁️ Condition | 💧 Humidity | 💨 Wind |
 |--------|-------------|------------|-----------|------|
-| 23°C | 25°C | Moderate or heavy rain shower | 81% | 4 km/h |
+| 19°C | 20°C | Light rain shower | 93% | 8 km/h |
 <!-- WEATHER_END -->
+
 
 
 
