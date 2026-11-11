@@ -29,8 +29,9 @@ Here are some ideas to get you started:
 🌦️ **Weather in Kathmandu** — updated every hour
 | 🌡️ Temp | 🤔 Feels Like | ☁️ Condition | 💧 Humidity | 💨 Wind |
 |--------|-------------|------------|-----------|------|
-| 10°C | 9°C | Smoky haze | 72% | 4 km/h |
+| 10°C | 8°C | Patchy rain nearby | 69% | 4 km/h |
 <!-- WEATHER_END -->
+
 
 
 
